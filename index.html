@@ -189,8 +189,8 @@ function jumpNo(btn, nextFn) {
     if (noCount >= 3) {
         transition(() => {
             screen.innerHTML = `
-                <h1>😌 Nope</h1>
-                <p>You can’t say no.<br>You signed up for this, remember 😂?.</p>
+                <h1>😌 NOPE</h1>
+                <p>You can’t say NO<br>You signed up for this, remember 😂?</p>
                 <button onclick="${nextFn.name}()">Continue</button>
             `;
         });
@@ -203,7 +203,7 @@ function loveIntro() {
     transition(() => {
         screen.innerHTML = `
             <h1>So, Sim ❤️</h1>
-            <p>A tiny test.<br>Be honest 😌</p>
+            <p>A tiny test, Ready?<br>Be honest 😌</p>
             <button onclick="q1()">Start</button>
         `;
     });
@@ -228,14 +228,14 @@ function fakeWrong() {
         screen.innerHTML = `
             <h1>❌ Wrong answer</h1>
             <p>I’ll shush you if you give wrong answers 😶‍🌫️</p>
-            <p class="small">Jk 😂 Relax. I know your heart.</p>
+            <p class="small">Jk 😂 Relax, I know your heart.</p>
         `;
     });
     setTimeout(() => {
         transition(() => {
             screen.innerHTML = `
                 <h1>😏 Just kidding</h1>
-                <p>You can’t be wrong.</p>
+                <p>You can’t be wrong</p>
                 <button onclick="q2()">Continue</button>
             `;
         });
@@ -276,7 +276,7 @@ function q4() {
             <div class="options">
                 <button onclick="pause()">Always</button>
                 <button onclick="pause()">Without a doubt</button>
-                <button onclick="pause()">There is no other option</button>
+                <button onclick="pause()">There is no other option😂</button>
             </div>
         `;
     });
@@ -311,7 +311,7 @@ function final() {
     transition(() => {
         screen.innerHTML = `
             <h1>You passed the test and successfully wasted 2 minutes 🤪</h1>
-            <p>TBH, You are the best answers to all my prayers. MY LIFELINE ❣️</p>
+            <p>TBH, You are the best answers to all my prayers, MY LIFELINE ❣️</p>
             <p><strong>ILYSM & there's nothing on this planet which can define my love to you.</strong></p>
         `;
         screen.onclick = easterEgg;
