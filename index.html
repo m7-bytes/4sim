@@ -28,8 +28,14 @@ body {
     transition: opacity 0.3s ease;
 }
 
-h1 { font-size: 26px; margin-bottom: 10px; }
-p { font-size: 16px; line-height: 1.6; margin-bottom: 22px; }
+h1 { font-size: 26px; margin-bottom: 8px; }
+p { font-size: 16px; line-height: 1.6; margin-bottom: 20px; }
+
+.small {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-bottom: 14px;
+}
 
 button {
     width: 100%;
@@ -87,47 +93,39 @@ button {
 const screen = document.getElementById("screen");
 const music = document.getElementById("music");
 let noCount = 0;
-let currentStep = 0;
+let finalTapped = false;
 
 function startMusic() {
     music.play().catch(() => {});
-    transition(() => readyQ());
+    transition(readyQ);
 }
+
+/* ===== INTRO QUESTIONS ===== */
 
 function readyQ() {
-    askYesNo(
-        "Are you ready for some fun activity?",
-        mindQ
-    );
+    askYesNo("Are you ready for some fun activity?", surpriseQ);
 }
 
-function mindQ() {
-    askYesNo(
-        "Do you like surprises?",
-        mindReadQ
-    );
+function surpriseQ() {
+    askYesNo("Do you like surprises?", mindReadQ);
 }
 
 function mindReadQ() {
     askYesNo(
-        "What if I told you this page can read your mind?",
-        believeQ
+        "What if I told you this web page can read your mind?",
+        loveIntro,
+        "I already know what you’re thinking anyway 😌"
     );
 }
 
-function believeQ() {
-    askYesNo(
-        "Would you believe that?",
-        loveIntro
-    );
-}
-
-function askYesNo(question, nextFn) {
+function askYesNo(question, nextFn, extraText = "") {
     noCount = 0;
     transition(() => {
         screen.innerHTML = `
+            <div class="small">Just a few questions…</div>
             <h1>Question</h1>
             <p>${question}</p>
+            ${extraText ? `<p class="small">${extraText}</p>` : ""}
             <div class="options">
                 <button class="yes" onclick="${nextFn.name}()">Yes</button>
                 <button class="no" id="noBtn">No</button>
@@ -140,20 +138,21 @@ function askYesNo(question, nextFn) {
 
 function jumpNo(btn, nextFn) {
     noCount++;
-    btn.style.transform = `translate(${Math.random()*120-60}px, ${Math.random()*80-40}px)`;
+    const move = noCount * 20;
+    btn.style.transform = `translate(${move}px, ${-move}px)`;
 
     if (noCount >= 3) {
         transition(() => {
             screen.innerHTML = `
                 <h1>😌 Nope</h1>
-                <p>You can’t say no.<br>You signed up for this.</p>
+                <p>You can’t say no.<br>You signed up for this,remember?😂.</p>
                 <button onclick="${nextFn.name}()">Continue</button>
             `;
         });
     }
 }
 
-/* ORIGINAL QUESTIONS CONTINUE BELOW */
+/* ===== LOVE QUESTIONS ===== */
 
 function loveIntro() {
     transition(() => {
@@ -168,6 +167,7 @@ function loveIntro() {
 function q1() {
     transition(() => {
         screen.innerHTML = `
+            <div class="small">Almost there…</div>
             <h1>Do you love me?</h1>
             <div class="options">
                 <button onclick="fakeWrong()">Yes</button>
@@ -182,7 +182,8 @@ function fakeWrong() {
     transition(() => {
         screen.innerHTML = `
             <h1>❌ Wrong answer</h1>
-            <p>I’ll shush you if you give wrong answers 😶‍🌫️</p>
+            <p>I’ll shushhh you if you give wrong answers 😶‍🌫️</p>
+            <p class="small">Relax. I know your heart.</p>
         `;
     });
     setTimeout(() => {
@@ -199,10 +200,10 @@ function fakeWrong() {
 function q2() {
     transition(() => {
         screen.innerHTML = `
-            <h1>When did you first realise you love me?</h1>
+            <h1>When did you first realise that i could be your potential partner?</h1>
             <div class="options">
                 <button onclick="q3()">The first time we talked</button>
-                <button onclick="q3()">Slowly… then suddenly</button>
+                <button onclick="q3()">The first time we met </button>
                 <button onclick="q3()">When I saw your face 😌</button>
             </div>
         `;
@@ -215,7 +216,7 @@ function q3() {
             <h1>What’s my role in your life?</h1>
             <div class="options">
                 <button onclick="q4()">My peace</button>
-                <button onclick="q4()">My chaos (but cute)</button>
+                <button onclick="q4()">My dushmann (but cute)</button>
                 <button onclick="q4()">My forever person</button>
             </div>
         `;
@@ -227,12 +228,22 @@ function q4() {
         screen.innerHTML = `
             <h1>Do you see us together in the future?</h1>
             <div class="options">
-                <button onclick="q5()">Always</button>
-                <button onclick="q5()">Without a doubt</button>
-                <button onclick="q5()">There is no other option</button>
+                <button onclick="pause()">Always</button>
+                <button onclick="pause()">Without a doubt</button>
+                <button onclick="pause()">There is no other option</button>
             </div>
         `;
     });
+}
+
+function pause() {
+    transition(() => {
+        screen.innerHTML = `
+            <h1>Okay…</h1>
+            <p>Last one.</p>
+        `;
+    });
+    setTimeout(q5, 1200);
 }
 
 function q5() {
@@ -251,12 +262,20 @@ function q5() {
 function final() {
     transition(() => {
         screen.innerHTML = `
-            <h1>You passed the test,</h1>
-            <p>The best answers to all my prayers 🤌</p>
-            <p><strong>Ilysm.</strong></p>
+            <h1>You passed the test & successfully wasted 2 minutes,</h1>
+            <p>Tbh youre the best answers to all my prayers 🤌</p>
+            <p><strong>Ilysm and theres nothing in this planet which can define my love to you.</strong></p>
         `;
+        screen.onclick = easterEgg;
         hearts();
     });
+}
+
+function easterEgg() {
+    if (!finalTapped) {
+        finalTapped = true;
+        screen.innerHTML += `<p class="small">Still here? I love that.</p>`;
+    }
 }
 
 function transition(cb) {
