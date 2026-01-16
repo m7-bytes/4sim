@@ -29,12 +29,21 @@ body {
 }
 
 h1 { font-size: 26px; margin-bottom: 8px; }
-p { font-size: 16px; line-height: 1.6; margin-bottom: 20px; }
+p { font-size: 16px; line-height: 1.6; margin-bottom: 18px; }
 
 .small {
     font-size: 13px;
     opacity: 0.7;
-    margin-bottom: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 18px;
 }
 
 button {
@@ -46,6 +55,11 @@ button {
     color: white;
     font-size: 16px;
     margin-top: 10px;
+    transition: transform 0.15s ease;
+}
+
+button:active {
+    transform: scale(0.97);
 }
 
 .options {
@@ -84,9 +98,9 @@ button {
 </audio>
 
 <div class="card" id="screen">
-    <h1>Hi 👋</h1>
-    <p>Tap below to start the music 🎵</p>
-    <button onclick="startMusic()">Play Music</button>
+    <h1>Hi Sim 👋</h1>
+    <p>Tap below to begin</p>
+    <button onclick="startMusic()">Start this with me ❤️</button>
 </div>
 
 <script>
@@ -95,12 +109,32 @@ const music = document.getElementById("music");
 let noCount = 0;
 let finalTapped = false;
 
+/* ===== MUSIC + NAME ===== */
+
 function startMusic() {
     music.play().catch(() => {});
-    transition(readyQ);
+    transition(nameScreen);
 }
 
-/* ===== INTRO QUESTIONS ===== */
+function nameScreen() {
+    screen.innerHTML = `
+        <h1>Your name?</h1>
+        <input type="text" placeholder="Type here">
+        <button onclick="nameReveal()">Continue</button>
+    `;
+}
+
+function nameReveal() {
+    transition(() => {
+        screen.innerHTML = `
+            <h1>To me,</h1>
+            <p><strong>you are my Sim ❤️</strong></p>
+            <button onclick="readyQ()">Continue</button>
+        `;
+    });
+}
+
+/* ===== FUN INTRO QUESTIONS ===== */
 
 function readyQ() {
     askYesNo("Are you ready for some fun activity?", surpriseQ);
@@ -112,10 +146,21 @@ function surpriseQ() {
 
 function mindReadQ() {
     askYesNo(
-        "What if I told you this web page can read your mind?",
-        loveIntro,
+        "What if I told you this webpage can read your mind?",
+        mindPayoff,
         "I already know what you’re thinking anyway 😌"
     );
+}
+
+function mindPayoff() {
+    transition(() => {
+        screen.innerHTML = `
+            <h1>😏</h1>
+            <p>You were going to click <strong>Yes</strong>.</p>
+            <p class="small">I know.</p>
+            <button onclick="loveIntro()">Continue</button>
+        `;
+    });
 }
 
 function askYesNo(question, nextFn, extraText = "") {
@@ -138,14 +183,14 @@ function askYesNo(question, nextFn, extraText = "") {
 
 function jumpNo(btn, nextFn) {
     noCount++;
-    const move = noCount * 20;
+    const move = noCount * 18;
     btn.style.transform = `translate(${move}px, ${-move}px)`;
 
     if (noCount >= 3) {
         transition(() => {
             screen.innerHTML = `
                 <h1>😌 Nope</h1>
-                <p>You can’t say no.<br>You signed up for this,remember?😂.</p>
+                <p>You can’t say no.<br>You signed up for this, remember 😂?.</p>
                 <button onclick="${nextFn.name}()">Continue</button>
             `;
         });
@@ -172,7 +217,7 @@ function q1() {
             <div class="options">
                 <button onclick="fakeWrong()">Yes</button>
                 <button onclick="fakeWrong()">Obviously yes</button>
-                <button onclick="fakeWrong()">Why is this even a question</button>
+                <button onclick="fakeWrong()">Yes,Obviously</button>
             </div>
         `;
     });
@@ -182,7 +227,7 @@ function fakeWrong() {
     transition(() => {
         screen.innerHTML = `
             <h1>❌ Wrong answer</h1>
-            <p>I’ll shushhh you if you give wrong answers 😶‍🌫️</p>
+            <p>I’ll shush you if you give wrong answers 😶‍🌫️</p>
             <p class="small">Relax. I know your heart.</p>
         `;
     });
@@ -194,17 +239,17 @@ function fakeWrong() {
                 <button onclick="q2()">Continue</button>
             `;
         });
-    }, 1800);
+    }, 1500);
 }
 
 function q2() {
     transition(() => {
         screen.innerHTML = `
-            <h1>When did you first realise that i could be your potential partner?</h1>
+            <h1>When did you first realise that i can be your potential partner?</h1>
             <div class="options">
                 <button onclick="q3()">The first time we talked</button>
-                <button onclick="q3()">The first time we met </button>
-                <button onclick="q3()">When I saw your face 😌</button>
+                <button onclick="q3()">The first time we met</button>
+                <button onclick="q3()">The first time we laughed 😌</button>
             </div>
         `;
     });
@@ -216,7 +261,7 @@ function q3() {
             <h1>What’s my role in your life?</h1>
             <div class="options">
                 <button onclick="q4()">My peace</button>
-                <button onclick="q4()">My dushmann (but cute)</button>
+                <button onclick="q4()">My dushmann</button>
                 <button onclick="q4()">My forever person</button>
             </div>
         `;
@@ -227,6 +272,7 @@ function q4() {
     transition(() => {
         screen.innerHTML = `
             <h1>Do you see us together in the future?</h1>
+            <p class="small">No pressure. Just honesty.</p>
             <div class="options">
                 <button onclick="pause()">Always</button>
                 <button onclick="pause()">Without a doubt</button>
@@ -259,12 +305,14 @@ function q5() {
     });
 }
 
+/* ===== FINAL ===== */
+
 function final() {
     transition(() => {
         screen.innerHTML = `
-            <h1>You passed the test & successfully wasted 2 minutes,</h1>
-            <p>Tbh youre the best answers to all my prayers 🤌</p>
-            <p><strong>Ilysm and theres nothing in this planet which can define my love to you.</strong></p>
+            <h1>You passed the test and successfully wasted 2 minutes 🤪</h1>
+            <p>Tbh, You are the best answers to all my prayers 🤌, my lifeline</p>
+            <p><strong>Ilysm & there's nothing on this planet which can define my love to you.</strong></p>
         `;
         screen.onclick = easterEgg;
         hearts();
