@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Sim ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #ffe4ec, #ffd6e8);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.card {
+    background: white;
+    width: 92%;
+    max-width: 380px;
+    padding: 28px;
+    border-radius: 22px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.12);
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+h1 { font-size: 26px; margin-bottom: 10px; }
+p { font-size: 16px; line-height: 1.6; margin-bottom: 22px; }
+
+button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 18px;
+    border: none;
+    background: #ff6f91;
+    color: white;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.options {
+    display: grid;
+    gap: 12px;
+    position: relative;
+}
+
+.options button.no {
+    background: #fff0f5;
+    color: #333;
+    position: relative;
+}
+
+.options button.yes {
+    background: #ff6f91;
+}
+
+.heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 22px;
+    animation: floatUp 4s linear forwards;
+}
+
+@keyframes floatUp {
+    to { transform: translateY(-120vh); }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+    <source src="hona-tha-pyaar.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card" id="screen">
+    <h1>Hi 👋</h1>
+    <p>Tap below to start the music 🎵</p>
+    <button onclick="startMusic()">Play Music</button>
+</div>
+
+<script>
+const screen = document.getElementById("screen");
+const music = document.getElementById("music");
+let noCount = 0;
+let currentStep = 0;
+
+function startMusic() {
+    music.play().catch(() => {});
+    transition(() => readyQ());
+}
+
+function readyQ() {
+    askYesNo(
+        "Are you ready for some fun activity?",
+        mindQ
+    );
+}
+
+function mindQ() {
+    askYesNo(
+        "Do you like surprises?",
+        mindReadQ
+    );
+}
+
+function mindReadQ() {
+    askYesNo(
+        "What if I told you this site can read your mind?",
+        believeQ
+    );
+}
+
+function believeQ() {
+    askYesNo(
+        "Would you believe that?",
+        loveIntro
+    );
+}
+
+function askYesNo(question, nextFn) {
+    noCount = 0;
+    transition(() => {
+        screen.innerHTML = `
+            <h1>Question</h1>
+            <p>${question}</p>
+            <div class="options">
+                <button class="yes" onclick="${nextFn.name}()">Yes</button>
+                <button class="no" id="noBtn">No</button>
+            </div>
+        `;
+        const noBtn = document.getElementById("noBtn");
+        noBtn.addEventListener("click", () => jumpNo(noBtn, nextFn));
+    });
+}
+
+function jumpNo(btn, nextFn) {
+    noCount++;
+    btn.style.transform = `translate(${Math.random()*120-60}px, ${Math.random()*80-40}px)`;
+
+    if (noCount >= 3) {
+        transition(() => {
+            screen.innerHTML = `
+                <h1>😌 Nope</h1>
+                <p>You can’t say no.<br>You signed up for this.</p>
+                <button onclick="${nextFn.name}()">Continue</button>
+            `;
+        });
+    }
+}
+
+/* ORIGINAL QUESTIONS CONTINUE BELOW */
+
+function loveIntro() {
+    transition(() => {
+        screen.innerHTML = `
+            <h1>Hello Sim ❤️</h1>
+            <p>A tiny test.<br>Be honest 😌</p>
+            <button onclick="q1()">Start</button>
+        `;
+    });
+}
+
+function q1() {
+    transition(() => {
+        screen.innerHTML = `
+            <h1>Do you love me?</h1>
+            <div class="options">
+                <button onclick="fakeWrong()">Yes</button>
+                <button onclick="fakeWrong()">Obviously yes</button>
+                <button onclick="fakeWrong()">Why is this even a question</button>
+            </div>
+        `;
+    });
+}
+
+function fakeWrong() {
+    transition(() => {
+        screen.innerHTML = `
+            <h1>❌ Wrong answer</h1>
+            <p>I’ll shush you if you give wrong answers 😶‍🌫️</p>
+        `;
+    });
+    setTimeout(() => {
+        transition(() => {
+            screen.innerHTML = `
+                <h1>😏 Just kidding</h1>
+                <p>You can’t be wrong.</p>
+                <button onclick="q2()">Continue</button>
+            `;
+        });
+    }, 1800);
+}
+
+function q2() {
+    transition(() => {
+        screen.innerHTML = `
+            <h1>When did you first realise you love me?</h1>
+            <div class="options">
+                <button onclick="q3()">The first time we talked</button>
+                <button onclick="q3()">Slowly… then suddenly</button>
+                <button onclick="q3()">When I saw your face 😌</button>
+            </div>
+        `;
+    });
+}
+
+function q3() {
+    transition(() => {
+        screen.innerHTML = `
+            <h1>What’s my role in your life?</h1>
+            <div class="options">
+                <button onclick="q4()">My peace</button>
+                <button onclick="q4()">My chaos (but cute)</button>
+                <button onclick="q4()">My forever person</button>
+            </div>
+        `;
+    });
+}
+
+function q4() {
+    transition(() => {
+        screen.innerHTML = `
+            <h1>Do you see us together in the future?</h1>
+            <div class="options">
+                <button onclick="q5()">Always</button>
+                <button onclick="q5()">Without a doubt</button>
+                <button onclick="q5()">There is no other option</button>
+            </div>
+        `;
+    });
+}
+
+function q5() {
+    transition(() => {
+        screen.innerHTML = `
+            <h1>How much do you love me?</h1>
+            <div class="options">
+                <button onclick="final()">More than words</button>
+                <button onclick="final()">Infinity ♾️</button>
+                <button onclick="final()">More than you love me</button>
+            </div>
+        `;
+    });
+}
+
+function final() {
+    transition(() => {
+        screen.innerHTML = `
+            <h1>You passed the test,</h1>
+            <p>The best answers to all my prayers 🤌</p>
+            <p><strong>Ilysm.</strong></p>
+        `;
+        hearts();
+    });
+}
+
+function transition(cb) {
+    screen.style.opacity = 0;
+    setTimeout(() => {
+        cb();
+        screen.style.opacity = 1;
+    }, 250);
+}
+
+function hearts() {
+    setInterval(() => {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.innerHTML = "❤️";
+        h.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 4000);
+    }, 350);
+}
+</script>
+
+</body>
+</html>
